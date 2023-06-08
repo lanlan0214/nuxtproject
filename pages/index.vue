@@ -7,18 +7,24 @@
       <input class="px-2 border border-gray-800 rounded-md min-w-64" type="text" v-model="searchTerm"
         placeholder="Search...">
     </div>
-    {{ searchTerm }}
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 self-center gap-x-10 gap-y-10 mb-10">
+      <div v-for="movie in data?.results">
+        {{ movie.title }}
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 // 這裡使用API響應
-import { APIResponse } from '~/types/APIResponse';
+import { ApiResponse } from '~/types/APIResponse';
 
 const searchTerm = ref('');
 
 const url = computed(() => {
-  return `api/movies/search`
+  return `api/movies/search?query=${searchTerm.value}`
 })
+
+const { data } = await useFetch<ApiResponse>(url)
 
 </script>
